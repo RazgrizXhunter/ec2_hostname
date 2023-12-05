@@ -40,7 +40,7 @@ else
 fi
 
 # Fetching the hostname tag
-RAW_HOSTNAME_TAG=$(aws ec2 describe-tags --region $REGION --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | tr ' ' '-')
+RAW_HOSTNAME_TAG=$(aws ec2 describe-tags --region $REGION --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | tr ' ' '-' | tr -d ',()')
 
 # Extracting the hostname value from the tag output
 HOSTNAME=$(echo $RAW_HOSTNAME_TAG | awk '{print $5}')
