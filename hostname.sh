@@ -40,7 +40,7 @@ else
 fi
 
 # Fetching the hostname tag
-RAW_HOSTNAME_TAG=$(aws ec2 describe-tags --region $REGION --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | tr ' ' '-' | tr -d ',')
+RAW_HOSTNAME_TAG=$(aws ec2 describe-tags --region $REGION --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | tr ' ' '-') # Replacing spaces here as tabs get converted to spaces when defining the variable
 
 # Extracting the hostname value from the tag output
 HOSTNAME=$(echo $RAW_HOSTNAME_TAG | awk '{print $5}')
@@ -50,7 +50,7 @@ if [ -z "$HOSTNAME" ]; then
     echo "No 'Name' tag found for this instance. Skipping hostname change."
     exit 1
 else
-    FORMATTED_HOSTNAME=$(echo $HOSTNAME | tr -d '()' | tr ' ' '-')
+    FORMATTED_HOSTNAME=$(echo $HOSTNAME | tr -d ',' | tr -d '()')
     # Prompt for hostname change
     read -p "Change hostname to $FORMATTED_HOSTNAME? [Y/n] " -n 1 -r
     echo
